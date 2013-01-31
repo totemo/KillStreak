@@ -14,10 +14,8 @@ Configuration
 		  potion: SPEED
 		  level: 2
 	PlayerStreaks:
-- - - -
 **Breakdown of the configuration**
 
- - `KillStreak` - The base node for the configuration. **Do not rename this!**
  - `reset-on-disconnect` - Whether to reset a player's kill streak on disconnect
  - `streaks` - A list of potions rewarded on streaks
    - `5` - The streak a player must achieve to get a powerup (can be any number)
