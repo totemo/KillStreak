@@ -45,6 +45,7 @@ public class KillStreakManager {
 	{
 		int streak = config.getInt("PlayerStreaks."+player) + 1;
 		config.set("PlayerStreaks."+player, streak);
+		plugin.saveConfig();
 	}
 	
 	/*

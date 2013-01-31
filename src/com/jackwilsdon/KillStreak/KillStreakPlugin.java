@@ -1,5 +1,7 @@
 package com.jackwilsdon.KillStreak;
  
+import java.io.IOException;
+import java.util.logging.Level;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /*
@@ -23,6 +25,16 @@ public class KillStreakPlugin extends JavaPlugin {
 		 * Save default config
 		 */
 		saveDefaultConfig();
+		
+		/*
+		 * Start metrics
+		 */
+		try {
+			Metrics metrics = new Metrics(this);
+			metrics.start();
+		} catch (IOException e) {
+			getServer().getLogger().log(Level.WARNING, "Unable to send statistics :(");
+		}
 		
 		/*
 		 * Configure the KillStreakManager
