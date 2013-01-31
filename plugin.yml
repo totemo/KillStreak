@@ -1,0 +1,12 @@
+name: "KillStreak"
+main: "com.jackwilsdon.KillStreak.KillStreakPlugin"
+version: "1.0"
+description: "Get potion effects for kill streaks!"
+author: "Jack Wilsdon (jackwilsdon)"
+website: "http://jackwilsdon.tk"
+
+commands:
+    killstreak:
+        description: View your current kill streak
+        usage: /killstreak
+        aliases: ["ks"]

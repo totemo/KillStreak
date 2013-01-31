@@ -1,0 +1,11 @@
+# KillStreak by Jack Wilsdon (jackwilsdon)
+KillStreak:
+  reset-on-disconnect: false
+  streaks:
+    5:
+      potion: SPEED
+      level: 1
+    10:
+      potion: SPEED
+      level: 2
+PlayerStreaks:
