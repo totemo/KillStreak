@@ -1,6 +1,6 @@
 KillStreak
 ==========
-Get poiton effects for kill streaks!
+Get potion effects for kill streaks!
 
 Configuration
 -------------
