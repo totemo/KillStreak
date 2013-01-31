@@ -73,6 +73,7 @@ public class KillStreakEventListener implements Listener {
 			if (KillStreakManager.getPotion(killer) != null)
 			{
 				Potion potion = KillStreakManager.getPotion(killer);
+				pDeath.getEntity().getKiller().removePotionEffect(potion.getType().getEffectType());
 				potion.apply(pDeath.getEntity().getKiller());
 			}
 		}
