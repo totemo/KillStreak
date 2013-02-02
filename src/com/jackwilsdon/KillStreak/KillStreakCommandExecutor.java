@@ -15,7 +15,7 @@ public class KillStreakCommandExecutor implements CommandExecutor {
 	/*
 	 * Prefix for messages
 	 */
-	private String prefix = ChatColor.WHITE+"["+ChatColor.GREEN+"KillStreak"+ChatColor.WHITE+"] ";
+	private String prefix = KillStreakManager.getPrefix();
 	
 	/*
 	 * onCommand()
@@ -26,6 +26,7 @@ public class KillStreakCommandExecutor implements CommandExecutor {
 	{	
 		if (cmd.getName().equalsIgnoreCase("killstreak") || cmd.getName().equalsIgnoreCase("ks"))
 		{
+			ChatColor kC = KillStreakManager.getKillColor();
 			if (!(cmdSender instanceof Player))
 			{
 				if (arguments.length != 1)
@@ -33,12 +34,12 @@ public class KillStreakCommandExecutor implements CommandExecutor {
 					cmdSender.sendMessage("Console usage: /"+cmd.getName()+" <username>");
 				} else {
 					int streak = KillStreakManager.get(arguments[0]);
-					cmdSender.sendMessage(prefix+arguments[0]+" has a current kill streak of "+streak);
+					cmdSender.sendMessage(prefix+arguments[0]+" has a current kill streak of "+kC+streak);
 				}
 				return true;
 			}
 			int streak = KillStreakManager.get(cmdSender.getName());
-			cmdSender.sendMessage(prefix+"Your current kill streak is "+streak);
+			cmdSender.sendMessage(prefix+"Your current kill streak is "+kC+streak);
 		}
 		return true;
 	}

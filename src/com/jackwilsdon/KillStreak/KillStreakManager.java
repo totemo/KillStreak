@@ -3,6 +3,7 @@ package com.jackwilsdon.KillStreak;
 import java.util.Locale;
 import java.util.logging.Level;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
@@ -33,7 +34,8 @@ public class KillStreakManager {
 	 * resetStreak()
 	 * Resets a player's killstreak (usually called on death)
 	 */
-	public static void resetStreak(String player) {
+	public static void resetStreak(String player)
+	{
 		config.set("PlayerStreaks."+player, 0);
 	}
 	
@@ -61,7 +63,12 @@ public class KillStreakManager {
 		return config.getInt("PlayerStreaks."+player);
 	}
 
-	public static Potion getPotion(String killer) {
+	/*
+	 * getPotion()
+	 * Get a potion for a player's killstreak
+	 */
+	public static Potion getPotion(String killer)
+	{
 		int streak = get(killer);
 		if (config.get("KillStreak.streaks."+streak+".potion") == null) return null;
 		String type = config.getString("KillStreak.streaks."+streak+".potion").toUpperCase(Locale.ENGLISH);
@@ -79,6 +86,69 @@ public class KillStreakManager {
 		
 		Potion potion = new Potion(pType, level);
 		return potion;
+	}
+
+	/*
+	 * getPrefix()
+	 * Get the prefix from the configuration
+	 */
+	public static String getPrefix()
+	{
+		String message = config.getString("KillStreak.messages.message-tag")+" ";
+		return parseText(message);
+	}
+	
+	/*
+	 * getKillColor()
+	 * Get the kill color from the config
+	 */
+	public static ChatColor getKillColor()
+	{
+		String cc = config.getString("KillStreak.messages.killstreak-color").substring(1);
+		ChatColor col = ChatColor.getByChar(cc);
+		return col;
+	}
+	
+	/*
+	 * getUsernameColor()
+	 * Get the username color from the config
+	 */
+	public static ChatColor getUsernameColor()
+	{
+		String cc = config.getString("KillStreak.messages.username-color").substring(1);
+		ChatColor col = ChatColor.getByChar(cc);
+		return col;
+	}
+	
+	/*
+	 * parseText()
+	 * Add color to text
+	 */
+	public static String parseText(String text)
+	{
+		for (ChatColor color : ChatColor.values()) {
+			String code = "&"+color.getChar();
+			text = text.replaceAll(code, color.toString());
+		}
+		return text;
+	}
+	
+	/*
+	 * shouldBroadcastMessage()
+	 * Check whether a message should be broadcast
+	 */
+	public static boolean shouldBroadcastMessage()
+	{
+		return config.getBoolean("KillStreak.messages.broadcast-on-powerup");
+	}
+	
+	/*
+	 * shouldTellPlayer()
+	 * Check whether the player should be told on powerup
+	 */
+	public static boolean shouldTellPlayer()
+	{
+		return config.getBoolean("KillStreak.messages.tell-player-on-powerup");
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.jackwilsdon.KillStreak;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
@@ -17,7 +18,7 @@ public class KillStreakEventListener implements Listener {
 	/*
 	 * Prefix for messages
 	 */
-	private String prefix = ChatColor.WHITE+"["+ChatColor.GREEN+"KillStreak"+ChatColor.WHITE+"] ";
+	private String prefix = KillStreakManager.getPrefix();
 	
 	/*
 	 * Variables for plugin
@@ -57,7 +58,9 @@ public class KillStreakEventListener implements Listener {
 	{
 		String victim = pDeath.getEntity().getName();
 		
-		pDeath.getEntity().sendMessage(prefix+"Your kill streak was "+KillStreakManager.get(victim));
+		ChatColor kC = KillStreakManager.getKillColor();
+		
+		pDeath.getEntity().sendMessage(prefix+"Your kill streak was "+kC+KillStreakManager.get(victim));
 		
 		KillStreakManager.resetStreak(victim);
 		
@@ -68,13 +71,26 @@ public class KillStreakEventListener implements Listener {
 			
 			KillStreakManager.add(killer);
 			
-			pDeath.getEntity().getKiller().sendMessage(prefix+"Your kill streak is now "+KillStreakManager.get(killer));
+			pDeath.getEntity().getKiller().sendMessage(prefix+"Your kill streak is now "+kC+KillStreakManager.get(killer));
 			
 			if (KillStreakManager.getPotion(killer) != null)
 			{
 				Potion potion = KillStreakManager.getPotion(killer);
 				pDeath.getEntity().getKiller().removePotionEffect(potion.getType().getEffectType());
 				potion.apply(pDeath.getEntity().getKiller());
+				
+				boolean broadcast = KillStreakManager.shouldBroadcastMessage();
+				boolean message = KillStreakManager.shouldTellPlayer();
+				int kills = KillStreakManager.get(killer);
+				ChatColor uC = KillStreakManager.getUsernameColor();
+				
+				
+				if (broadcast)
+				{
+					Bukkit.getServer().broadcastMessage(prefix+uC+killer+ChatColor.WHITE+" has a kill streak of "+kC+kills+ChatColor.WHITE+", and was rewarded the powerup "+ChatColor.YELLOW+potion.getType().name()+"!");
+				} else if (message) {
+					pDeath.getEntity().getKiller().sendMessage(prefix+"You now have a kill streak of "+kC+kills+ChatColor.WHITE+"!");
+				}
 			}
 		}
 	}

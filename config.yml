@@ -8,4 +8,10 @@ KillStreak:
     10:
       potion: SPEED
       level: 2
+  messages:
+    broadcast-on-powerup: true
+    tell-player-on-powerup: false
+    message-tag: '&f[&aKillStreak&f]'
+    killstreak-color: '&c'
+    username-color: '&e'
 PlayerStreaks:
