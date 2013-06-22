@@ -47,3 +47,7 @@ Valid potions
  - SLOWNESS (level 1)
  - INSTANT_DAMAGE (level 1-2)
  - INVISIBILITY (level 1)
+ 
+Statistics
+----------
+![MCStats Statistics](http://mcstats.org/signature/KillStreak.png)
