@@ -16,40 +16,25 @@ public class KillStreakPlugin extends JavaPlugin {
 	 */
 	public void onEnable()
 	{
-		/*
-		 * Output enable message
-		 */
 		getLogger().info(getDescription().getFullName()+" enabled!");
-		
-		/*
-		 * Save default config
-		 */
 		saveDefaultConfig();
 		
 		/*
 		 * Start metrics
 		 */
 		try {
-			Metrics metrics = new Metrics(this);
+			MetricsLite metrics = new MetricsLite(this);
 			metrics.start();
 		} catch (IOException e) {
 			getServer().getLogger().log(Level.WARNING, "Unable to send statistics :(");
 		}
 		
 		/*
-		 * Configure the KillStreakManager
+		 * Register listeners
 		 */
 		KillStreakManager.create(this);
-		
-		/*
-		 * Register command listener
-		 */
 		getCommand("killstreak").setExecutor(new KillStreakCommandExecutor());
-		
-		/*
-		 * Register event listener
-		 */
-		getServer().getPluginManager().registerEvents(new KillStreakEventListener(this), this);
+		getServer().getPluginManager().registerEvents(new KillStreakEventListener(), this);
 	}
 	
 	/*
@@ -58,9 +43,6 @@ public class KillStreakPlugin extends JavaPlugin {
 	 */
 	public void onDisable()
 	{
-		/*
-		 * Output disable message
-		 */
 		getLogger().info(getDescription().getFullName()+" disabled!");
 	}
 }
