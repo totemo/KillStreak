@@ -2,7 +2,6 @@ package com.jackwilsdon.KillStreak;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -15,44 +14,18 @@ import org.bukkit.potion.Potion;
  */
 public class KillStreakEventListener implements Listener {
 	
-	/*
-	 * Prefix for messages
-	 */
 	private String prefix = KillStreakManager.getPrefix();
-	
-	/*
-	 * Variables for plugin
-	 */
-	private KillStreakPlugin plugin;
-	private FileConfiguration config;
-	
-	/*
-	 * KillStreakEventListener()
-	 * Constructor
-	 */
-	KillStreakEventListener(KillStreakPlugin pl)
-	{
-		plugin = pl;
-		config = plugin.getConfig();
-	}
-	
-	/*
-	 * onQuit()
-	 * Called when a player leaves/quits
-	 */
+
+	@EventHandler
 	public void onQuit(PlayerQuitEvent pQuit)
 	{
-		if (config.getBoolean("KillStreak.reset-on-disconnect"))
+		if (KillStreakManager.shouldResetOnDisconnect())
 		{
 			String username = pQuit.getPlayer().getName();
 			KillStreakManager.resetStreak(username);
 		}
 	}
-	
-	/*
-	 * onDeath()
-	 * Called when a player dies
-	 */
+
 	@EventHandler
 	public void onDeath(PlayerDeathEvent pDeath)
 	{
