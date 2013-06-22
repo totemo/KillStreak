@@ -8,9 +8,11 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.potion.Potion;
 
-/*
+/**
  * KillStreakEventListener
- * Called on player death
+ * Handles events for KillStreak
+ * @author Jack Wilsdon
+ *
  */
 public class KillStreakEventListener implements Listener {
 	

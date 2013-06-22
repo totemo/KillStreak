@@ -4,16 +4,14 @@ import java.io.IOException;
 import java.util.logging.Level;
 import org.bukkit.plugin.java.JavaPlugin;
 
-/*
+/**
  * KillStreakPlugin
- * Main class - Manages enabling and disabling
+ * Main plugin file
+ * @author Jack Wilsdon
+ *
  */
 public class KillStreakPlugin extends JavaPlugin {
 	
-	/*
-	 * onEnable()
-	 * Called on plugin enable
-	 */
 	public void onEnable()
 	{
 		getLogger().info(getDescription().getFullName()+" enabled!");
@@ -37,10 +35,6 @@ public class KillStreakPlugin extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new KillStreakEventListener(), this);
 	}
 	
-	/*
-	 * onDisable()
-	 * Called on plugin disable
-	 */
 	public void onDisable()
 	{
 		getLogger().info(getDescription().getFullName()+" disabled!");
