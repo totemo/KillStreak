@@ -10,19 +10,11 @@ import org.bukkit.entity.Player;
  * KillStreakCommandExecutor
  * Handles commands for KillStreak
  * @author Jack Wilsdon
- *
  */
 public class KillStreakCommandExecutor implements CommandExecutor {
 
-	/*
-	 * Prefix for messages
-	 */
 	private String prefix = KillStreakManager.getPrefix();
 	
-	/*
-	 * onCommand()
-	 * Called when a command is run
-	 */
 	@Override
 	public boolean onCommand(CommandSender cmdSender, Command cmd, String label, String[] arguments)
 	{	

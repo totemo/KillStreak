@@ -8,7 +8,6 @@ import org.bukkit.plugin.java.JavaPlugin;
  * KillStreakPlugin
  * Main plugin file
  * @author Jack Wilsdon
- *
  */
 public class KillStreakPlugin extends JavaPlugin {
 	

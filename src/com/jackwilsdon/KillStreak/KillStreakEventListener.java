@@ -12,7 +12,6 @@ import org.bukkit.potion.Potion;
  * KillStreakEventListener
  * Handles events for KillStreak
  * @author Jack Wilsdon
- *
  */
 public class KillStreakEventListener implements Listener {
 	
