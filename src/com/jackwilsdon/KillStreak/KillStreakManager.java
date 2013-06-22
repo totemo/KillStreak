@@ -4,75 +4,71 @@ import java.util.Locale;
 import java.util.logging.Level;
 
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
 
-/*
+/**
  * KillStreakManager
- * Manages killstreaks of players
+ * Manages the killstreaks of players
+ * @author Jack Wilsdon
  */
 public class KillStreakManager {
-
-	/*
-	 * Variables for plugin
-	 */
 	private static KillStreakPlugin plugin;
-	private static FileConfiguration config;
 	
-	/*
-	 * create()
-	 * Set the plugin reference and configuration
+	/**
+	 * Set the plugin reference to use
+	 * @param pl The plugin reference to use
 	 */
 	public static void create(KillStreakPlugin pl)
 	{
 		plugin = pl;
-		config = plugin.getConfig();
 	}
 	
-	/*
-	 * resetStreak()
-	 * Resets a player's killstreak (usually called on death)
+	/**
+	 * Reset a player's killstreak
+	 * @param player The player to reset
 	 */
 	public static void resetStreak(String player)
 	{
-		config.set("PlayerStreaks."+player, 0);
+		plugin.getConfig().set("PlayerStreaks."+player, 0);
 	}
 	
-	/*
-	 * add()
+	/**
 	 * Add a kill to a player
+	 * @param player The player to add the kill to
 	 */
 	public static void add(String player)
 	{
-		int streak = config.getInt("PlayerStreaks."+player) + 1;
-		config.set("PlayerStreaks."+player, streak);
+		int streak = plugin.getConfig().getInt("PlayerStreaks."+player) + 1;
+		plugin.getConfig().set("PlayerStreaks."+player, streak);
 		plugin.saveConfig();
 	}
 	
-	/*
-	 * get()
-	 * Get a player's killstreak
+	/**
+	 * Get the killstreak of a player
+	 * @param player The player to get the killstreak from
+	 * @return The player's killstreak
 	 */
 	public static int get(String player)
 	{
-		if (config.get("PlayerStreaks."+player) == null)
+		if (plugin.getConfig().get("PlayerStreaks."+player) == null)
 		{
 			return 0;
 		}
-		return config.getInt("PlayerStreaks."+player);
+		return plugin.getConfig().getInt("PlayerStreaks."+player);
 	}
 
-	/*
-	 * getPotion()
-	 * Get a potion for a player's killstreak
+	/**
+	 * Get the potion for the killstreak of a player
+	 * @param killer The player to get the potion for
+	 * @return The potion for the killstreak of the player (null if no potion is available)
 	 */
 	public static Potion getPotion(String killer)
 	{
 		int streak = get(killer);
-		if (config.get("KillStreak.streaks."+streak+".potion") == null) return null;
-		String type = config.getString("KillStreak.streaks."+streak+".potion").toUpperCase(Locale.ENGLISH);
-		int level = config.getInt("KillStreak.streaks."+streak+".level");
+		if (plugin.getConfig().get("KillStreak.streaks."+streak+".potion") == null) return null;
+		String type = plugin.getConfig().getString("KillStreak.streaks."+streak+".potion").toUpperCase(Locale.ENGLISH);
+		int level = plugin.getConfig().getInt("KillStreak.streaks."+streak+".level");
 		PotionType pType = null;
 		
 		try {
@@ -88,41 +84,42 @@ public class KillStreakManager {
 		return potion;
 	}
 
-	/*
-	 * getPrefix()
-	 * Get the prefix from the configuration
+	/**
+	 * Get the plugin's chat prefix
+	 * @return The plugin's chat prefix
 	 */
 	public static String getPrefix()
 	{
-		String message = config.getString("KillStreak.messages.message-tag")+" ";
+		String message = plugin.getConfig().getString("KillStreak.messages.message-tag")+" ";
 		return parseText(message);
 	}
 	
-	/*
-	 * getKillColor()
-	 * Get the kill color from the config
+	/**
+	 * Get the color to show kills in chat
+	 * @return The color to show kills in chat
 	 */
 	public static ChatColor getKillColor()
 	{
-		String cc = config.getString("KillStreak.messages.killstreak-color").substring(1);
+		String cc = plugin.getConfig().getString("KillStreak.messages.killstreak-color").substring(1);
 		ChatColor col = ChatColor.getByChar(cc);
 		return col;
 	}
 	
-	/*
-	 * getUsernameColor()
-	 * Get the username color from the config
+	/**
+	 * Get the username color to show in chat
+	 * @return The username color to show in chat
 	 */
 	public static ChatColor getUsernameColor()
 	{
-		String cc = config.getString("KillStreak.messages.username-color").substring(1);
+		String cc = plugin.getConfig().getString("KillStreak.messages.username-color").substring(1);
 		ChatColor col = ChatColor.getByChar(cc);
 		return col;
 	}
 	
-	/*
-	 * parseText()
-	 * Add color to text
+	/**
+	 * Parse text for color codes
+	 * @param text The text to parse
+	 * @return Text with color codes added
 	 */
 	public static String parseText(String text)
 	{
@@ -133,22 +130,31 @@ public class KillStreakManager {
 		return text;
 	}
 	
-	/*
-	 * shouldBroadcastMessage()
-	 * Check whether a message should be broadcast
+	/**
+	 * Check whether powerup messages should be broadcast
+	 * @return Whether powerup messages should be broadcast
 	 */
 	public static boolean shouldBroadcastMessage()
 	{
-		return config.getBoolean("KillStreak.messages.broadcast-on-powerup");
+		return plugin.getConfig().getBoolean("KillStreak.messages.broadcast-on-powerup");
 	}
 	
-	/*
-	 * shouldTellPlayer()
+	/**
 	 * Check whether the player should be told on powerup
+	 * @return Whether the player should be notified on powerup
 	 */
 	public static boolean shouldTellPlayer()
 	{
-		return config.getBoolean("KillStreak.messages.tell-player-on-powerup");
+		return plugin.getConfig().getBoolean("KillStreak.messages.tell-player-on-powerup");
+	}
+	
+	/**
+	 * Check whether the killstreak should be reset on disconnect
+	 * @return Whether the killstreak should be reset on disconnect
+	 */
+	public static boolean shouldResetOnDisconnect()
+	{
+		return plugin.getConfig().getBoolean("KillStreak.reset-on-disconnect");
 	}
 
 }
