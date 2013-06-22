@@ -2,6 +2,8 @@ KillStreak
 ==========
 Get potion effects for kill streaks!
 
+Get it on [BukkitDev](http://dev.bukkit.org/bukkit-plugins/killstreak/)
+
 Configuration
 -------------
 `KillStreak.reset-on-disconnect: false` - Whether to reset a player's kill streak on disconnect
