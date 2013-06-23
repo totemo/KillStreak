@@ -15,6 +15,12 @@ public class KillStreakPlugin extends JavaPlugin {
 		this.getLogger().info(this.getDescription().getFullName()+" enabled!");
 		this.saveDefaultConfig();
 		
+		if (this.getConfig().getBoolean("KillStreak.updater-enabled"))
+		{
+			KillStreakUpdateChecker update = new KillStreakUpdateChecker(this);
+			this.getServer().getScheduler().runTaskAsynchronously(this, update);
+		}
+		
 		try {
 			MetricsLite metrics = new MetricsLite(this);
 			metrics.start();

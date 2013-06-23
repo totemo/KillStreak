@@ -1,5 +1,6 @@
 # KillStreak by Jack Wilsdon (jackwilsdon)
 KillStreak:
+  updater-enabled: true
   reset-on-disconnect: false
   streaks:
     5:
