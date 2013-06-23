@@ -2,8 +2,9 @@ KillStreak
 ==========
 Get potion effects for kill streaks!
 
-Get it on [BukkitDev](http://dev.bukkit.org/bukkit-plugins/killstreak/)
+A kill streak is a continuous set of kills without dying. If you achieve X kills without death (as defined in the configuration), you get a predefined potion effect.
 
+Get it on [BukkitDev](http://dev.bukkit.org/bukkit-plugins/killstreak/).
 Configuration
 -------------
 `KillStreak.reset-on-disconnect: false` - Whether to reset a player's kill streak on disconnect
@@ -46,3 +47,7 @@ Valid potions
  - SLOWNESS (level 1)
  - INSTANT_DAMAGE (level 1-2)
  - INVISIBILITY (level 1)
+ 
+Statistics
+----------
+![MCStats Statistics](http://mcstats.org/signature/KillStreak.png)
