@@ -17,8 +17,6 @@ Configuration
 
 `KillStreak.messages.broadcast-on-powerup: true` - Whether to broadcast to the server that the player has achieved a powerup
 
-`KillStreak.messages.tell-player-on-powerup: false` - Whether to tell a player they have achieved a powerup
-
 `KillStreak.messages.message-tag: '&f[&aKillStreak&f]'` - The prefix for any messages
 
 `KillStreak.messages.killstreak-color: '&c'` - The color of the number shown in messages 
