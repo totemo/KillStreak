@@ -1,43 +1,84 @@
-package com.jackwilsdon.KillStreak;
+package com.jackwilsdon.killstreak;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 /**
- * KillStreakCommandExecutor
- * Handles commands for KillStreak
+ * Handles and executes commands for KillStreak
  * @author Jack Wilsdon
  */
 public class KillStreakCommandExecutor implements CommandExecutor {
-
-	private String prefix = KillStreakManager.getPrefix();
+	private KillStreakManager manager = null;
+	
+	/**
+	 * Pass an instance of KillStreakManager to use
+	 * @param manager An instance of KillStreakManager
+	 */
+	public KillStreakCommandExecutor(KillStreakManager manager)
+	{
+		this.manager = manager;
+	}
+	
+	/**
+	 * Check if the CommandSender is a player
+	 * @param sender The CommandSender to check
+	 * @return True if the sender is a player, false if the sender is not a player
+	 */
+	private boolean isPlayer(CommandSender sender)
+	{
+		return sender instanceof Player;
+	}
 	
 	@Override
-	public boolean onCommand(CommandSender cmdSender, Command cmd, String label, String[] arguments)
-	{	
-		if (cmd.getName().equalsIgnoreCase("killstreak") || cmd.getName().equalsIgnoreCase("ks"))
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) 
+	{
+		if (this.isPlayer(sender))
 		{
-			ChatColor kC = KillStreakManager.getKillColor();
-			if (!(cmdSender instanceof Player))
+			if (args.length == 0)
 			{
-				if (arguments.length != 1)
-				{
-					cmdSender.sendMessage("Console usage: /"+cmd.getName()+" <username>");
-				} else {
-					int streak = KillStreakManager.get(arguments[0]);
-					cmdSender.sendMessage(prefix+arguments[0]+" has a current kill streak of "+kC+streak);
-				}
+				String message = this.manager.getChatManager().getStreak(sender.getName());
+				sender.sendMessage(message);
 				return true;
 			}
-			int streak = KillStreakManager.get(cmdSender.getName());
-			cmdSender.sendMessage(prefix+"Your current kill streak is "+kC+streak);
+			
+			if (args.length == 1)
+			{
+				String username = args[1];
+				if (!this.manager.playerExists(username))
+				{
+					String message = this.manager.getChatManager().getPrefix()+"That player does not exist!";
+					sender.sendMessage(this.manager.getChatManager().parseColors(message));
+					return true;
+				}
+				
+				String message = this.manager.getChatManager().getStreak(username, false);
+				sender.sendMessage(message);
+				return true;
+			}
+		} else {
+			if (args.length == 0)
+			{
+				String message = "Usage: /"+label+" <username>";
+				sender.sendMessage(message);
+				return true;
+			}
+			
+			if (args.length == 1)
+			{
+				String username = args[1];
+				if (!this.manager.playerExists(username))
+				{
+					sender.sendMessage("That player does not exist!");
+					return true;
+				}
+				
+				String message = this.manager.getChatManager().getStreak(username, false);
+				sender.sendMessage(message);
+				return true;
+			}
 		}
 		return true;
 	}
-
-	
-	
 }

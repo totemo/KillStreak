@@ -1,160 +1,232 @@
-package com.jackwilsdon.KillStreak;
+package com.jackwilsdon.killstreak;
 
-import java.util.Locale;
-import java.util.logging.Level;
+import java.util.*;
 
-import org.bukkit.ChatColor;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
 
 /**
- * KillStreakManager
  * Manages the killstreaks of players
  * @author Jack Wilsdon
  */
 public class KillStreakManager {
-	private static KillStreakPlugin plugin;
+	private KillStreakPlugin plugin = null;
+	private KillStreakChatManager chatManager = null;
 	
 	/**
-	 * Set the plugin reference to use
-	 * @param pl The plugin reference to use
+	 * Create the KillStreakManager with an instance of KillStreakPlugin
+	 * @param plugin An instance of KillStreakPlugin
 	 */
-	public static void create(KillStreakPlugin pl)
+	public KillStreakManager(KillStreakPlugin plugin)
 	{
-		plugin = pl;
+		this.plugin = plugin;
+		
+		ConfigurationSection section = this.plugin.getConfig().getConfigurationSection("KillStreak.messages");
+		this.chatManager = new KillStreakChatManager(section, this);
+	}
+	
+	/**
+	 * Check whether a player is in the database
+	 * @param username The player to check
+	 * @return Whether the player is in the database
+	 */
+	public boolean playerExists(String username)
+	{
+		return (this.plugin.getConfig().get("PlayerStreaks."+username) != null);
+	}
+	
+	/**
+	 * Delete a player from the database
+	 * @param username The player to remove
+	 */
+	public void deletePlayer(String username)
+	{
+		if (!playerExists(username))
+		{
+			return;
+		}
+		
+		this.plugin.getConfig().set("PlayerStreaks."+username, null);
+		this.plugin.saveConfig();
 	}
 	
 	/**
 	 * Reset a player's killstreak
-	 * @param player The player to reset
+	 * @param username The player to reset
 	 */
-	public static void resetStreak(String player)
+	public void resetPlayer(String username)
 	{
-		plugin.getConfig().set("PlayerStreaks."+player, 0);
+		if (!playerExists(username))
+		{
+			return;
+		}
+		
+		this.plugin.getConfig().set("PlayerStreaks."+username, 0);
+		this.plugin.saveConfig();
 	}
 	
 	/**
-	 * Add a kill to a player
-	 * @param player The player to add the kill to
+	 * Find how many kills a player has
+	 * @param username The player to check
+	 * @return How many kills the player has
 	 */
-	public static void add(String player)
+	public int getKills(String username)
 	{
-		int streak = plugin.getConfig().getInt("PlayerStreaks."+player) + 1;
-		plugin.getConfig().set("PlayerStreaks."+player, streak);
-		plugin.saveConfig();
-	}
-	
-	/**
-	 * Get the killstreak of a player
-	 * @param player The player to get the killstreak from
-	 * @return The player's killstreak
-	 */
-	public static int get(String player)
-	{
-		if (plugin.getConfig().get("PlayerStreaks."+player) == null)
+		if (!this.playerExists(username))
 		{
 			return 0;
 		}
-		return plugin.getConfig().getInt("PlayerStreaks."+player);
-	}
-
-	/**
-	 * Get the potion for the killstreak of a player
-	 * @param killer The player to get the potion for
-	 * @return The potion for the killstreak of the player (null if no potion is available)
-	 */
-	public static Potion getPotion(String killer)
-	{
-		int streak = get(killer);
-		if (plugin.getConfig().get("KillStreak.streaks."+streak+".potion") == null) return null;
-		String type = plugin.getConfig().getString("KillStreak.streaks."+streak+".potion").toUpperCase(Locale.ENGLISH);
-		int level = plugin.getConfig().getInt("KillStreak.streaks."+streak+".level");
-		PotionType pType = null;
 		
-		try {
-			pType = PotionType.valueOf(type);
-		} catch (Exception e) {
-			plugin.getLogger().log(Level.SEVERE, "\""+type+"\" is not a valid potion type!");
+		return this.plugin.getConfig().getInt("PlayerStreaks."+username);
+	}
+	
+	/**
+	 * Set the number of kills the player has
+	 * @param username The player to set the kills for
+	 * @param kills The number to set the player's kills to
+	 */
+	public void setKills(String username, int kills)
+	{
+		this.plugin.getConfig().set("PlayerStreaks."+username, kills);
+		this.plugin.saveConfig();
+	}
+	
+	/**
+	 * Add kills to a player
+	 * @param username The player to add kills to
+	 * @param kills The number of kills to add
+	 */
+	public void addKills(String username, int kills)
+	{
+		int newKills = this.getKills(username) + kills;
+		this.setKills(username, newKills);
+	}
+	
+	/**
+	 * Add 1 kill to a player
+	 * @param username The player to add 1 kill to
+	 */
+	public void addKill(String username)
+	{
+		this.addKills(username, 1);
+	}
+	
+	/**
+	 * Get a list of all players
+	 * @return A list of all players
+	 */
+	public Map<String, Integer> getPlayers()
+	{
+		if (this.plugin.getConfig().getConfigurationSection("PlayerStreaks") == null)
+		{
+			return new HashMap<String, Integer>();
+		}
+		
+		Map<String, Integer> players = new HashMap<String, Integer>();
+		Set<String> pl = this.plugin.getConfig().getConfigurationSection("PlayerStreaks").getKeys(true);
+		Iterator<String> it = pl.iterator();
+		
+		while (it.hasNext())
+		{
+			String name = it.next();
+			int kills = this.plugin.getConfig().getInt("PlayerStreaks."+name);
+			players.put(name, kills);
+		}
+		
+		return players;
+	}
+	
+	/**
+	 * Get the potion for the specified killstreak
+	 * @param kills The killstreak to get the potion for
+	 * @return The potion from the configuration (null if no potion available)
+	 */
+	public Potion getPotion(int kills)
+	{
+		ConfigurationSection section = this.plugin.getConfig().getConfigurationSection("KillStreak.streaks."+kills);
+		if (section == null)
+		{
 			return null;
 		}
 		
-		if (pType == null) return null;
+		String type = section.getString("potion");
+		int level = section.getInt("level");
 		
-		Potion potion = new Potion(pType, level);
+		PotionType pt = PotionType.valueOf(type);
+		if (pt == null)
+		{
+			return null;
+		}
+		
+		Potion potion = new Potion(pt, level);
 		return potion;
 	}
-
+	
 	/**
-	 * Get the plugin's chat prefix
-	 * @return The plugin's chat prefix
+	 * Get the potion for the specified user
+	 * @param kills The user to get the potion for
+	 * @return The potion from the configuration (null if no potion available)
 	 */
-	public static String getPrefix()
+	public Potion getPotion(String username)
 	{
-		String message = plugin.getConfig().getString("KillStreak.messages.message-tag")+" ";
-		return parseText(message);
+		int kills = this.getKills(username);
+		return this.getPotion(kills);
 	}
 	
 	/**
-	 * Get the color to show kills in chat
-	 * @return The color to show kills in chat
+	 * Applies a potion to the player if one is available
+	 * @param username The player to apply the potion to
 	 */
-	public static ChatColor getKillColor()
+	public void apply(String username)
 	{
-		String cc = plugin.getConfig().getString("KillStreak.messages.killstreak-color").substring(1);
-		ChatColor col = ChatColor.getByChar(cc);
-		return col;
-	}
-	
-	/**
-	 * Get the username color to show in chat
-	 * @return The username color to show in chat
-	 */
-	public static ChatColor getUsernameColor()
-	{
-		String cc = plugin.getConfig().getString("KillStreak.messages.username-color").substring(1);
-		ChatColor col = ChatColor.getByChar(cc);
-		return col;
-	}
-	
-	/**
-	 * Parse text for color codes
-	 * @param text The text to parse
-	 * @return Text with color codes added
-	 */
-	public static String parseText(String text)
-	{
-		for (ChatColor color : ChatColor.values()) {
-			String code = "&"+color.getChar();
-			text = text.replaceAll(code, color.toString());
+		Player player = this.plugin.getServer().getPlayer(username);
+		Potion potion = this.getPotion(username);
+		
+		if (potion == null || player == null)
+		{
+			return;
 		}
-		return text;
-	}
-	
-	/**
-	 * Check whether powerup messages should be broadcast
-	 * @return Whether powerup messages should be broadcast
-	 */
-	public static boolean shouldBroadcastMessage()
-	{
-		return plugin.getConfig().getBoolean("KillStreak.messages.broadcast-on-powerup");
-	}
-	
-	/**
-	 * Check whether the player should be told on powerup
-	 * @return Whether the player should be notified on powerup
-	 */
-	public static boolean shouldTellPlayer()
-	{
-		return plugin.getConfig().getBoolean("KillStreak.messages.tell-player-on-powerup");
-	}
-	
-	/**
-	 * Check whether the killstreak should be reset on disconnect
-	 * @return Whether the killstreak should be reset on disconnect
-	 */
-	public static boolean shouldResetOnDisconnect()
-	{
-		return plugin.getConfig().getBoolean("KillStreak.reset-on-disconnect");
-	}
 
+		player.removePotionEffect(potion.getType().getEffectType());
+		player.addPotionEffects(potion.getEffects());
+	}
+	
+	/**
+	 * Broadcast a message if a powerup is achieved
+	 * @param username The user to check for a powerup
+	 */
+	public void broadcast(String username)
+	{
+		Player player = this.plugin.getServer().getPlayer(username);
+		Potion potion = this.getPotion(username);
+		
+		if (this.chatManager.broadcastOnPowerup() && potion != null)
+		{
+			String message = this.chatManager.getBroadcastMessage(username);
+			this.plugin.getServer().broadcastMessage(message);
+		} else {
+			String message = this.chatManager.getMessage(username);
+			player.sendMessage(message);
+		}
+	}
+	
+	/**
+	 * Get the KillStreakChatManager to use for formatting
+	 * @return The KillStreakChatManager to use for formatting
+	 */
+	public KillStreakChatManager getChatManager()
+	{
+		return this.chatManager;
+	}
+	
+	/**
+	 * Check whether to reset streak on disconnect
+	 * @return Whether to reset streak on disconnect
+	 */
+	public boolean resetOnDisconnect()
+	{
+		return this.plugin.getConfig().getBoolean("KillStreak.reset-on-disconnect");
+	}
 }

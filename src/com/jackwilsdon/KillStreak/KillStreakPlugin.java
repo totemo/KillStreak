@@ -1,11 +1,10 @@
-package com.jackwilsdon.KillStreak;
+package com.jackwilsdon.killstreak;
  
 import java.io.IOException;
 import java.util.logging.Level;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
- * KillStreakPlugin
  * Main plugin file
  * @author Jack Wilsdon
  */
@@ -13,29 +12,27 @@ public class KillStreakPlugin extends JavaPlugin {
 	
 	public void onEnable()
 	{
-		getLogger().info(getDescription().getFullName()+" enabled!");
-		saveDefaultConfig();
+		this.getLogger().info(this.getDescription().getFullName()+" enabled!");
+		this.saveDefaultConfig();
 		
-		/*
-		 * Start metrics
-		 */
 		try {
 			MetricsLite metrics = new MetricsLite(this);
 			metrics.start();
 		} catch (IOException e) {
-			getServer().getLogger().log(Level.WARNING, "Unable to send statistics :(");
+			this.getServer().getLogger().log(Level.WARNING, "Unable to send statistics :(");
 		}
 		
-		/*
-		 * Register listeners
-		 */
-		KillStreakManager.create(this);
-		getCommand("killstreak").setExecutor(new KillStreakCommandExecutor());
-		getServer().getPluginManager().registerEvents(new KillStreakEventListener(), this);
+		KillStreakManager manager = new KillStreakManager(this);
+		manager.getPlayers();
+		
+		KillStreakEventListener ev = new KillStreakEventListener(manager);
+		this.getServer().getPluginManager().registerEvents(ev, this);
+		
+		
 	}
 	
 	public void onDisable()
 	{
-		getLogger().info(getDescription().getFullName()+" disabled!");
+		this.getLogger().info(this.getDescription().getFullName()+" disabled!");
 	}
 }
