@@ -1,9 +1,9 @@
 name: "KillStreak"
-main: "com.jackwilsdon.KillStreak.KillStreakPlugin"
-version: "1.2"
+main: "com.jackwilsdon.killstreak.KillStreakPlugin"
+version: "1.4"
 description: "Get potion effects for kill streaks!"
 author: "Jack Wilsdon (jackwilsdon)"
-website: "http://jackwilsdon.tk"
+website: "http://dev.bukkit.org/bukkit-plugins/killstreak/"
 
 commands:
     killstreak:
