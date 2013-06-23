@@ -1,3 +1,4 @@
+name: "KillStreak"
 main: "com.jackwilsdon.killstreak.KillStreakPlugin"
 version: "1.4"
 description: "Get potion effects for kill streaks!"
