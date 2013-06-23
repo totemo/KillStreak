@@ -26,7 +26,7 @@
  * either expressed or implied, of anybody else.
  */
 
-package com.jackwilsdon.KillStreak;
+package com.jackwilsdon.killstreak;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
