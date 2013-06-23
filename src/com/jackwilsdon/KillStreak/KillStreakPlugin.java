@@ -23,8 +23,6 @@ public class KillStreakPlugin extends JavaPlugin {
 		}
 		
 		KillStreakManager manager = new KillStreakManager(this);
-		manager.getPlayers();
-		
 		KillStreakEventListener ev = new KillStreakEventListener(manager);
 		this.getServer().getPluginManager().registerEvents(ev, this);
 		
