@@ -229,4 +229,9 @@ public class KillStreakManager {
 	{
 		return this.plugin.getConfig().getBoolean("KillStreak.reset-on-disconnect");
 	}
+	
+	public boolean updateAvailable()
+	{
+		return this.plugin.getConfig().getBoolean("KillStreak.update-available");
+	}
 }

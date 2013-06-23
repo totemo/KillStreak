@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 /**
@@ -47,6 +48,19 @@ public class KillStreakEventListener implements Listener {
 		if (this.manager.resetOnDisconnect())
 		{
 			this.manager.resetPlayer(player.getName());;
+		}
+	}
+	
+	@EventHandler
+	public void onJoin(PlayerJoinEvent event)
+	{
+		Player player = event.getPlayer();
+		if (player.isOp() || player.hasPermission("KillStreak.update"))
+		{
+			if (this.manager.updateAvailable())
+			{
+				player.sendMessage(this.manager.getChatManager().parseColors("&5An update is available for KillStreak"));
+			}
 		}
 	}
 }
