@@ -32,6 +32,9 @@ public class KillStreakPlugin extends JavaPlugin {
 		KillStreakEventListener ev = new KillStreakEventListener(manager);
 		this.getServer().getPluginManager().registerEvents(ev, this);
 		
+		KillStreakCommandExecutor executor = new KillStreakCommandExecutor(manager);
+		this.getCommand("killstreak").setExecutor(executor);
+		
 		
 	}
 	
