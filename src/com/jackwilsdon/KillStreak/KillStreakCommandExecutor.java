@@ -79,6 +79,20 @@ public class KillStreakCommandExecutor implements CommandExecutor {
 				return true;
 			}
 		}
+		if (args.length == 1)
+		{
+			if (args[0].equals("reload"))
+			{
+				if (!sender.hasPermission("killstreak.reload"))
+				{
+					sender.sendMessage(this.manager.getChatManager().parseColors("&cYou don't have permission to do that!"));
+					return true;
+				}
+				
+				sender.sendMessage(this.manager.getChatManager().parseColors("&aKillStreak configuration reloaded"));
+				this.manager.reload();
+			}
+		}
 		return true;
 	}
 }
