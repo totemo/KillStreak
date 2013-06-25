@@ -34,7 +34,7 @@ A full list of chat color codes can be found [here](http://wiki.ess3.net/mc/).
 Commands
 --------
  - `/ks [username]` **or** `/killstreak [username]` - Shows your current kill streak, or another user's kill streak
- - `/ks reload` - Reloads the KillStreak configuration (permission: killstreak.reload)
+ - `/ks reload` **or** `/killstreak reload` - Reloads the KillStreak configuration (permission: killstreak.reload)
 
 Valid potions
 -------------
