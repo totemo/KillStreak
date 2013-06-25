@@ -7,6 +7,10 @@ A kill streak is a continuous set of kills without dying. If you achieve X kills
 Get it on [BukkitDev](http://dev.bukkit.org/bukkit-plugins/killstreak/).
 Configuration
 -------------
+`KillStreak.updater-enabled: true` - Enable the updater
+
+`KillStreak.update-available` - Used for the updater (do not modify!)
+
 `KillStreak.reset-on-disconnect: false` - Whether to reset a player's kill streak on disconnect
 
 `KillStreak.streaks.5` The kill streak a player needs before they get the powerup
@@ -25,11 +29,12 @@ Configuration
 
 `PlayerStreaks` - Where player killstreaks are stored (do not modify!)
 
-A full list of chat color codes can be found [here](http://wiki.ess3.net/mc/)
+A full list of chat color codes can be found [here](http://wiki.ess3.net/mc/).
 
 Commands
 --------
  - `/ks [username]` **or** `/killstreak [username]` - Shows your current kill streak, or another user's kill streak
+ - `/ks reload` - Reloads the KillStreak configuration (permission: killstreak.reload)
 
 Valid potions
 -------------
