@@ -220,6 +220,14 @@ public class KillStreakManager {
 	{
 		return this.chatManager;
 	}
+
+	/**
+	 * Reload the configuration
+	 */
+	public void reload()
+	{
+		this.plugin.reloadConfig();
+	}
 	
 	/**
 	 * Check whether to reset streak on disconnect
@@ -230,6 +238,10 @@ public class KillStreakManager {
 		return this.plugin.getConfig().getBoolean("KillStreak.reset-on-disconnect");
 	}
 	
+	/**
+	 * Returns whether an update is available (defined in the config)
+	 * @return Whether an update is available
+	 */
 	public boolean updateAvailable()
 	{
 		return this.plugin.getConfig().getBoolean("KillStreak.update-available");
