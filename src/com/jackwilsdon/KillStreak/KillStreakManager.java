@@ -176,6 +176,33 @@ public class KillStreakManager {
 	}
 	
 	/**
+	 * Get the list of mobs to add kills for
+	 * @return The list of mobs to add kills for
+	 */
+	public List<String> getMobs()
+	{
+		List<?> list = this.plugin.getConfig().getList("KillStreak.count-mobs.mobs");
+		List<String> output = new ArrayList<String>();
+		
+		Iterator<?> it = list.iterator();
+		while (it.hasNext())
+		{
+			String i = (String) it.next();
+			output.add(i);
+		}
+		return output;
+	}
+	
+	/**
+	 * Check whether mobs should be added to the killstreak
+	 * @return Whether mobs should be added to the killstreak
+	 */
+	public boolean countMobs()
+	{
+		return this.plugin.getConfig().getBoolean("KillStreak.count-mobs.enabled");
+	}
+	
+	/**
 	 * Applies a potion to the player if one is available
 	 * @param username The player to apply the potion to
 	 */
