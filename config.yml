@@ -2,6 +2,24 @@
 KillStreak:
   updater-enabled: true
   reset-on-disconnect: false
+  count-mobs:
+    enabled: false
+    mobs:
+     - BLAZE
+     - CAVE_SPIDER
+     - CREEPER
+     - ENDER_DRAGON
+     - ENDERMAN
+     - GHAST
+     - MAGMA_CUBE
+     - PIG_ZOMBIE
+     - SILVERFISH
+     - SKELETON
+     - SLIME
+     - SPIDER
+     - WITCH
+     - WITHER
+     - ZOMBIE
   streaks:
     5:
       potion: SPEED
