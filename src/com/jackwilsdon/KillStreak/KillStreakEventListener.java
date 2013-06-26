@@ -1,8 +1,11 @@
 package com.jackwilsdon.killstreak;
 
+import java.util.List;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -40,6 +43,31 @@ public class KillStreakEventListener implements Listener {
 			this.manager.broadcast(killer.getName());
 		}
 	}
+	
+	@EventHandler
+	public void entityDeath(EntityDeathEvent event)
+	{
+		if (!this.manager.countMobs())
+		{
+			return;
+		}
+		
+		List<String> mobs = this.manager.getMobs();
+		Player killer = event.getEntity().getKiller();
+		
+		if (killer == null)
+		{
+			return;
+		}
+		
+		if (mobs.contains(event.getEntityType().name()))
+		{
+			this.manager.addKill(killer.getName());
+			this.manager.apply(killer.getName());
+			this.manager.broadcast(killer.getName());
+		}
+	}
+	
 	
 	@EventHandler
 	public void onQuit(PlayerQuitEvent event)
