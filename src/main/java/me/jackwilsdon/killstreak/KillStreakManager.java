@@ -264,13 +264,4 @@ public class KillStreakManager {
 	{
 		return this.plugin.getConfig().getBoolean("KillStreak.reset-on-disconnect");
 	}
-	
-	/**
-	 * Returns whether an update is available (defined in the config)
-	 * @return Whether an update is available
-	 */
-	public boolean updateAvailable()
-	{
-		return this.plugin.getConfig().getBoolean("KillStreak.update-available");
-	}
 }

@@ -78,17 +78,5 @@ public class KillStreakEventListener implements Listener {
 			this.manager.resetPlayer(player.getName());;
 		}
 	}
-	
-	@EventHandler
-	public void onJoin(PlayerJoinEvent event)
-	{
-		Player player = event.getPlayer();
-		if (player.isOp() || player.hasPermission("KillStreak.update"))
-		{
-			if (this.manager.updateAvailable())
-			{
-				player.sendMessage(this.manager.getChatManager().parseColors("&5An update is available for KillStreak"));
-			}
-		}
-	}
+
 }
