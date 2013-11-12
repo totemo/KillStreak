@@ -1,4 +1,2 @@
-bin
-lib
-.project
-.classpath
+# Prevent maven targets from being pushed
+target
