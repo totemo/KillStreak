@@ -1,4 +1,4 @@
-package com.jackwilsdon.killstreak;
+package me.jackwilsdon.killstreak;
 
 import java.util.List;
 

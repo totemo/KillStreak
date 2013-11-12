@@ -1,4 +1,4 @@
-package com.jackwilsdon.killstreak;
+package me.jackwilsdon.killstreak;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
