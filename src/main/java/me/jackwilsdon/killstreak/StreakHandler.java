@@ -16,11 +16,6 @@ public final class StreakHandler {
         this.plugin = plugin;
         this.config = configuration.getConfigurationSection("KillStreak");
         this.players = configuration.getConfigurationSection("PlayerStreaks");
-
-        for (String key: this.config.getKeys(true))
-        {
-            System.out.println(key);
-        }
     }
 
     public ConfigurationSection getConfig() {
